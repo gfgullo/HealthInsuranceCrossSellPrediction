@@ -1,0 +1,46 @@
+{% extends "bootstrap/base.html" %}
+{% import "bootstrap/wtf.html" as wtf %}
+
+{% block title %}FlaskAsk{% endblock %}
+{% block content %}
+
+    <div class="navbar-right">
+
+    </div>
+
+    <div class="container">
+
+        <h1>Insurance Cross Selling Prediction</h1>
+        <p>
+            This app estimates the opportunity for insurance cross-selling. 
+            It uses information obtained from customers who have purchased an health insurance to predict whether they might be interested in purchasing a vehicle insurance as well.        </p>
+        <p>
+            The following is the information used by the system:
+            <ul>
+                <li><b>Gender:</b>gender of the customer</li>
+                <li><b>Age:</b>age of the customer</li>
+                <li><b>Driving License:</b>if the customer have a driving license</li>
+                <li><b>Region Code:</b>unique code for the region of the customer</li>
+                <li><b>Previously Insured:</b>if customer already has vehicle insurance</li>
+                <li><b>Vehicle Age:</b>age of the vehicle</li>
+                <li><b>Vehicle Damage:</b>if customer got his/her vehicle damaged in the past</li>
+                <li><b>Annual remium:</b>the amount customer needs to pay as premium in the year</li>
+                <li><b>Policy Sales Channel:</b>anonymized Code for the channel of outreaching to the customer ie. Different Agents, Over Mail, Over Phone, In Person, etc.</li>
+                <li><b>Vintage:</b>number of days, customer has been associated with the company</li>
+            </ul>
+        </p>
+
+        <h3>Enter customer information:</h3>
+        {{wtf.quick_form(form, form_type="basic")}}
+
+        <br/>
+
+        {% if response==0 %}
+        <h3>The customer <b>may not be interested</b> in a vehicle insurance with a probability of <b>{{confidence*100}}%</b></h3>
+        {% elif response==1 %}
+            <h3>The customer <b>might be interested</b> in a vehicle insurance with a probability of <b>{{confidence*100}}%</b></h3>
+        {% endif %}
+
+    </div>
+
+{% endblock %}
