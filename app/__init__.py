@@ -7,10 +7,11 @@ dropzone = Dropzone()
 
 def create_app():
 
-    app = Flask(__name__, static_url_path='/model')
+    app = Flask(__name__)
     app.config["SECRET_KEY"] = "a very safe secret key"
     app.config["DROPZONE_ALLOWED_FILE_CUSTOM"] = True
     app.config["DROPZONE_ALLOWED_FILE_TYPE"] = ".csv"
+    
     bootstrap.init_app(app)
     dropzone.init_app(app)
 
