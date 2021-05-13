@@ -34,13 +34,14 @@ def index():
 @main.route('/batch', methods=['GET', 'POST'])
 def batch():
     if request.method == 'POST':
-        global data, response, confidence
+        global response, confidence
         f = request.files.get('file')
         stream = codecs.iterdecode(f.stream, 'utf-8')
 
         data = []
 
         for line in stream:
+            print(line)
             sample = line.replace("\n","").split(",")
             data.append(
                 {"Gender": sample[0],
@@ -56,12 +57,11 @@ def batch():
             )
 
         response, confidence = predict(data)
-
+        print(response)
     return render_template('batch.html')
 
 
 @main.route('/result', methods=['GET', 'POST'])
 def result():
     global response, confidence
-    print(data)
     return render_template('result.html', response=response, confidence=confidence)
