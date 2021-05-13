@@ -1,16 +1,18 @@
-from flask import render_template
+from flask import render_template, request
 from . import main
 from .forms import DataForm
 from ..ml import predict
+import codecs
 
 
 @main.route('/', methods=['GET', 'POST'])
 def index():
+
     form = DataForm()
 
     if form.validate_on_submit():
         
-        data = {"Gender":form.gender.data,
+        data =  [{"Gender":form.gender.data,
                 "Age":form.age.data,
                 "Driving_License":form.driving_license.data,
                 "Region_code":float(form.region_code.data),
@@ -19,11 +21,47 @@ def index():
                 "Vehicle_Damage":form.vehicle_damage.data,
                 "Annual_Premium":form.annual_premium.data,
                 "Policy_Sales_Channel":float(form.policy_sales_channel.data),
-                "Vintage": form.vintage.data}
+                "Vintage": form.vintage.data}]
 
         response, confidence = predict(data)
-        print(response, confidence)
-        return render_template('index.html', form=form, response=response, confidence=confidence)
 
+        return render_template('index.html', form=form, response=response[0], confidence=confidence[0])
 
     return render_template('index.html', form=form)
+
+
+
+@main.route('/batch', methods=['GET', 'POST'])
+def batch():
+    if request.method == 'POST':
+        global data, response, confidence
+        f = request.files.get('file')
+        stream = codecs.iterdecode(f.stream, 'utf-8')
+
+        data = []
+
+        for line in stream:
+            sample = line.replace("\n","").split(",")
+            data.append(
+                {"Gender": sample[0],
+                 "Age": sample[1],
+                 "Driving_License": sample[2],
+                 "Region_code": float(sample[3]),
+                 "Previously_Insured": sample[4],
+                 "Vehicle_Age": sample[5],
+                 "Vehicle_Damage": sample[6],
+                 "Annual_Premium": sample[7],
+                 "Policy_Sales_Channel": float(sample[8]),
+                 "Vintage": sample[9]}
+            )
+
+        response, confidence = predict(data)
+
+    return render_template('batch.html')
+
+
+@main.route('/result', methods=['GET', 'POST'])
+def result():
+    global response, confidence
+    print(data)
+    return render_template('result.html', data=data, response=response, confidence=confidence)

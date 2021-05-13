@@ -1,0 +1,24 @@
+{% extends "navbar.html" %}
+
+{% block title %}Insurance Cross Selling Prediction{% endblock %}
+{% block content %}
+
+    <head>
+        {{ dropzone.load_css() }}
+    </head>
+    <body>
+        <div class="container">
+
+        <h1>Multiple Predictions</h1>
+        <p>
+            Get Multiple predictions by uploading a csv file with your observation.
+        </p>
+        </div>
+          {{ dropzone.create(action='main.batch') }}
+          {{ dropzone.load_js() }}
+          {{ dropzone.config(redirect_url=url_for('main.result'))}}
+          {{ dropzone.style('margin:40px 80px 40px 80px; min-height: 400px;') }}
+
+    </body>
+
+{% endblock %}

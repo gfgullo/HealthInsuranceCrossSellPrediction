@@ -1,0 +1,44 @@
+{% extends "navbar.html" %}
+
+{% block title %}Insurance Cross Selling Prediction{% endblock %}
+{% block content %}
+
+    {% if response is defined %}
+        <table class="table">
+
+            <thead>
+                <tr>
+                    <!--<th>Observation ID</th>-->
+
+                    {% for key in data[0] %}
+                        <th>{{ key }}</th>
+                    {% endfor %}
+
+                    <th>Response</th>
+                    <th>Confidence</th>
+                </tr>
+            </thead>
+
+            <tbody>
+            {% for _ in response %}
+                {% set outer_loop = loop %}
+                <tr>
+                    <!--<td>Observation {{ loop.index }}</td>-->
+
+                    {% for key in data[loop.index-1] %}
+                        <td>{{ data[outer_loop.index-1][key] }}</td>
+                    {% endfor %}
+
+                    <td><b>{{ response[loop.index-1] }}</b></td>
+                    <td><b>{{ (100*confidence[loop.index-1])|round(2)}}</b></td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    {% endif %}
+
+    </body>
+
+    <a style="margin-left: 20px" href="{{ url_for('main.batch') }}">Back</a>
+
+{% endblock %}
