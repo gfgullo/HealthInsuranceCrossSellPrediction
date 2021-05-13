@@ -64,4 +64,4 @@ def batch():
 def result():
     global response, confidence
     print(data)
-    return render_template('result.html', data=data, response=response, confidence=confidence)
+    return render_template('result.html', response=response, confidence=confidence)
