@@ -2,6 +2,9 @@
 .venv
 venv/
 venv*
+*venv
+app/venv/
+app/venv*
 .flaskenv
 *.pyc
 *.pyo

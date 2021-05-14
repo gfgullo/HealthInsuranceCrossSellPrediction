@@ -1,6 +1,0 @@
-Flask
-flask-bootstrap
-Flask-WTF
-scikit-learn
-pandas
-tensorflow

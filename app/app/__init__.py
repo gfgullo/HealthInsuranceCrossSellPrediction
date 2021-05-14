@@ -11,7 +11,7 @@ def create_app():
 
     app = Flask(__name__)
     app.secret_key = "a very safe secret key"
-    app.config["SECRET_KEY"] = "a very safe secret key"
+    app.config["SECRET_KEY"] = app.secret_key
     app.config['SESSION_TYPE'] = 'filesystem'
     app.config["DROPZONE_ALLOWED_FILE_CUSTOM"] = True
     app.config["DROPZONE_ALLOWED_FILE_TYPE"] = ".csv"
