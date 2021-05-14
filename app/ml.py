@@ -2,7 +2,7 @@ import numpy as np
 import pandas as pd
 from tensorflow.keras.models import load_model as load_tf_model
 from joblib import load
-
+from flask import current_app
 
 def preprocess(data):    
 
@@ -14,8 +14,8 @@ def preprocess(data):
 
     x = df.values
 
-    ct = load("model/columns_transformer.joblib")
-    ss = load("model/standard_scaler.joblib")
+    ct = load(current_app.root_path+"/model/columns_transformer.joblib")
+    ss = load(current_app.root_path+"/model/standard_scaler.joblib")
     
     x = ct.transform(x).toarray()
     x = ss.transform(x)
@@ -24,7 +24,7 @@ def preprocess(data):
 
 
 def load_model():
-    model = load_tf_model("model/model_2.h5")
+    model = load_tf_model(current_app.root_path+"/model/model_2.h5")
     return model
 
 
