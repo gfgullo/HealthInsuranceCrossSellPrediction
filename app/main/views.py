@@ -1,4 +1,4 @@
-from flask import render_template, request
+from flask import render_template, request, g
 from . import main
 from .forms import DataForm
 from ..ml import predict
@@ -35,7 +35,6 @@ def index():
 def batch():
     if request.method == 'POST':
         print("-------POST------")
-        global data, response, confidence
         f = request.files.get('file')
         stream = codecs.iterdecode(f.stream, 'utf-8')
 
@@ -59,10 +58,12 @@ def batch():
 
         response, confidence = predict(data)
         print(response)
+        g.data = data
+        g.response=response
+        g.confidence = confidence
     return render_template('batch.html')
 
 
 @main.route('/result', methods=['GET', 'POST'])
 def result():
-    global data, response, confidence
-    return render_template('result.html', data=data, response=response, confidence=confidence)
+    return render_template('result.html', data=g.data, response=g.response, confidence=g.confidence)
