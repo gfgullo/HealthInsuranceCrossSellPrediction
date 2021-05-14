@@ -34,12 +34,13 @@ def index():
 @main.route('/batch', methods=['GET', 'POST'])
 def batch():
     if request.method == 'POST':
+        print("-------POST------")
         global data, response, confidence
         f = request.files.get('file')
         stream = codecs.iterdecode(f.stream, 'utf-8')
 
         data = []
-
+        print("-------1-------")
         for line in stream:
             print(line)
             sample = line.replace("\n","").split(",")
