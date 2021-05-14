@@ -1,4 +1,5 @@
-from flask import render_template, request, g
+from flask import render_template, request, session
+from flask_session import Session
 from . import main
 from .forms import DataForm
 from ..ml import predict
@@ -58,12 +59,13 @@ def batch():
 
         response, confidence = predict(data)
         print(response)
-        g.data = data
-        g.response=response
-        g.confidence = confidence
+        session['data'] = data
+        session['response'] =response
+        session['confidence'] = confidence
+        
     return render_template('batch.html')
 
 
 @main.route('/result', methods=['GET', 'POST'])
 def result():
-    return render_template('result.html', data=g.data, response=g.response, confidence=g.confidence)
+    return render_template('result.html', data=session['data'], response=session['response'], confidence=session['confidence'])
