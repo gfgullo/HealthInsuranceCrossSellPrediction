@@ -34,7 +34,7 @@ def index():
 @main.route('/batch', methods=['GET', 'POST'])
 def batch():
     if request.method == 'POST':
-        global response, confidence
+        global data, response, confidence
         f = request.files.get('file')
         stream = codecs.iterdecode(f.stream, 'utf-8')
 
@@ -63,5 +63,5 @@ def batch():
 
 @main.route('/result', methods=['GET', 'POST'])
 def result():
-    global response, confidence
-    return render_template('result.html', response=response, confidence=confidence)
+    global data, response, confidence
+    return render_template('result.html', data=data, response=response, confidence=confidence)
