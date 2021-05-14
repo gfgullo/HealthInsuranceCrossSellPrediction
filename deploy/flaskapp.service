@@ -3,8 +3,8 @@ Description=Gunicorn instance to serve a flask app
 After=network.target
 
 [Service]
-User=ec2-user
-Group=ec2-user
+User=ubuntu
+Group=www-data
 WorkingDirectory=/home/ec2-user/HealthInsuranceCrossSellPrediction
 Environment="PATH=/home/ec2-user/HealthInsuranceCrossSellPrediction/venv/bin"
 ExecStart=/home/ec2-user/HealthInsuranceCrossSellPrediction/venv/bin/gunicorn --workers 3 --reload --bind unix:flaskapp.sock -m 007 wsgi:app
