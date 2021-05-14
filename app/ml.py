@@ -7,7 +7,6 @@ from flask import current_app
 def preprocess(data):    
 
     df = pd.DataFrame(data)
-    print(df.head())
     df["Gender"] = df["Gender"].map({'Male':1, 'Female':0})
     #df["Vehicle_Damage"] = df["Vehicle_Damage"].map({'Yes':1, 'No':0})
     df["Vehicle_Age"] = df["Vehicle_Age"].map({'> 2 Years':2, '1-2 Year':1.5, '< 1 Year':1 })
