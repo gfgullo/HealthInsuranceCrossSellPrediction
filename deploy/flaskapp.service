@@ -3,7 +3,7 @@ Description=Gunicorn instance to serve a flask app
 After=network.target
 
 [Service]
-User=ubuntu
+User=ec2-user
 Group=www-data
 WorkingDirectory=/home/ec2-user/HealthInsuranceCrossSellPrediction
 Environment="PATH=/home/ec2-user/HealthInsuranceCrossSellPrediction/venv/bin"
