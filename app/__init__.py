@@ -1,9 +1,13 @@
 from flask import Flask
 from flask_bootstrap import Bootstrap
 from flask_dropzone import Dropzone
+from flask_session import Session
+
+SESSION_TYPE = 'filesystem'
 
 bootstrap = Bootstrap()
 dropzone = Dropzone()
+session = Session()
 
 def create_app():
 
@@ -14,6 +18,7 @@ def create_app():
     
     bootstrap.init_app(app)
     dropzone.init_app(app)
+    session.init_app(app)
 
     from .api import api as api_blueprint
     app.register_blueprint(api_blueprint, url_prefix='/api/v1')
