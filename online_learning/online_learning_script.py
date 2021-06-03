@@ -9,7 +9,7 @@ import tarfile
 from os import remove, getcwd
 from shutil import move, rmtree
 from os.path import abspath
-
+import sys
 
 AWS_ROLE = "role_sagemaker"
 
@@ -57,6 +57,7 @@ def write_log():
 if __name__== "__main__":
     
     print(getcwd())
+    print(sys.path[0])
     print("Uploading collected samples on S3...", end="")
     training_data_uri = upload_data()
     print("DONE")
