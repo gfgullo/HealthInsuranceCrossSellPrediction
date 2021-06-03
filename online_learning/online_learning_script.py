@@ -6,7 +6,7 @@ import boto3
 from botocore.exceptions import ClientError
 from datetime import datetime as dt
 import tarfile
-from os import remove
+from os import remove,cwd
 from shutil import move, rmtree
 from os.path import abspath
 
@@ -56,6 +56,7 @@ def write_log():
     
 if __name__== "__main__":
     
+    print(os.cwd())
     print("Uploading collected samples on S3...", end="")
     training_data_uri = upload_data()
     print("DONE")
