@@ -38,7 +38,7 @@ def download_model(model_dir):
     p = model_dir.split("/")
     bucket_name, bucket_path = p[2], p[3]
     s3 = boto3.resource('s3')
-    s3.Bucket(bucket_name).download_file(bucket_path+"/output/"+ARCHIVE_NAME, ARCHIVE_NAME)
+    s3.Bucket(bucket_name).download_file(bucket_path+"/output/"+ARCHIVE_NAME, LEARNING_PATH+ARCHIVE_NAME)
 
     
 def extract_move_delete(archive_name):
