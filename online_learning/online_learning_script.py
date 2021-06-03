@@ -46,8 +46,9 @@ def extract_move_delete(archive_name):
     tar = tarfile.open(archive_path, "r:gz")
     tar.extractall()
     tar.close()
-    move(archive_path, APP_DIR+"/model/"+archive_name)
-    rmtree("00000001")
+    move(LEARNING_PATH+"model.h5", APP_DIR+"/model/model.h5")
+    remove(archive_path)
+    rmtree(LEARNING_PATH+"00000001")
 
     
 if __name__== "__main__":
