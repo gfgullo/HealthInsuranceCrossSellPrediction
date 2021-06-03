@@ -15,7 +15,7 @@ AWS_ROLE = "role_sagemaker"
 DATA_BUCKET = "health-insurance-cross-sell"
 DATA_URI = "s3://"+DATA_BUCKET
 
-LEARNING_PATH = sys.path[0].replace("online_learning","")
+LEARNING_PATH = sys.path[0]
 BASE_PATH = LEARNING_PATH.replace("online_learning","")
 APP_DIR = BASE_PATH+"/app/app/"
 
