@@ -8,6 +8,7 @@ from datetime import datetime as dt
 import tarfile
 from os import remove
 from shutil import move, rmtree
+from os.path import abspath
 
 
 AWS_ROLE = "role_sagemaker"
@@ -15,7 +16,7 @@ AWS_ROLE = "role_sagemaker"
 DATA_BUCKET = "health-insurance-cross-sell"
 DATA_URI = "s3://"+DATA_BUCKET
 
-APP_DIR = "../app/app/"
+APP_DIR = abspath("../app/app")
 ARCHIVE_NAME = "model.tar.gz"
 
 def upload_data():
@@ -24,7 +25,7 @@ def upload_data():
 
     s3 = boto3.client('s3')
 
-    with open(APP_DIR+"predictions/data.csv", "rb") as f:
+    with open(APP_DIR+"/predictions/data.csv", "rb") as f:
         s3.upload_fileobj(f, DATA_BUCKET, folder+"/data.csv")
 
     with open(APP_DIR+"/model/model.h5", "rb") as f:
@@ -39,10 +40,11 @@ def download_model(model_dir):
 
     
 def extract_move_delete(archive_name):
-    tar = tarfile.open(archive_name, "r:gz")
+    archive_path = abspath(archive_name)
+    tar = tarfile.open(archive_path, "r:gz")
     tar.extractall()
     tar.close()
-    move(archive_name, APP_DIR+"/model/"+archive_name)
+    move(archive_path, APP_DIR+"/model/"+archive_name)
     rmtree("00000001")
     
 
