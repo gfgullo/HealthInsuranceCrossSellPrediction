@@ -48,12 +48,6 @@ def extract_move_delete(archive_name):
     tar.close()
     move(archive_path, APP_DIR+"/model/"+archive_name)
     rmtree("00000001")
-    
-
-def write_log():
-    f = open("learning.log", "a+")
-    f.write("COMPLETED\n")
-    f.close()
 
     
 if __name__== "__main__":
@@ -70,9 +64,8 @@ if __name__== "__main__":
     
     print("Starting online learning...")
     
-    """
     estimator = TensorFlow(
-    entry_point="training_script.py",
+    entry_point=LEARNING_PATH+"training_script.py",
     role=role,
     instance_count=1,
     instance_type="ml.m5.large",
@@ -95,10 +88,4 @@ if __name__== "__main__":
                        
     print("Moving new model inside app...", end="")
     extract_move_delete(ARCHIVE_NAME)
-    print("DONE")
-    """
-    
-    write_log()
-    print("\nCOMPLETED!\n")
-        
-    
+    print("DONE")    
