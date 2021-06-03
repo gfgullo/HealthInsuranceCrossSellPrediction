@@ -48,11 +48,12 @@ def extract_move_delete(archive_name):
     tar.close()
     move(LEARNING_PATH+"model.h5", APP_DIR+"/model/model.h5")
     remove(archive_path)
-    rmtree(LEARNING_PATH+"00000001")
+    #rmtree(LEARNING_PATH+"00000001")
 
     
 if __name__== "__main__":
     
+    """
     print(getcwd())
     print("Uploading collected samples on S3...", end="")
     training_data_uri = upload_data()
@@ -79,7 +80,8 @@ if __name__== "__main__":
     estimator.fit(DATA_URI)
     
     new_model_dir = estimator.model_dir
-    
+    """
+    new_model_dir = "s3://sagemaker-us-west-2-248207680755/tensorflow-training-2021-06-03-18-20-56-136/model"
     print("Training completed!")
     print("Model stored at: "+new_model_dir)
     
