@@ -4,6 +4,6 @@ server {
 
     location / {
         include proxy_params;
-        proxy_pass http://unix:/home/ubuntu/HealthInsuranceCrossSellPrediction/app/flaskapp.sock;
+        proxy_pass http://unix:/home/ubuntu/HealthInsuranceCrossSellPrediction/flaskapp.sock;
     }
 }

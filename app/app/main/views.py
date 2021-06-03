@@ -13,7 +13,7 @@ def index():
 
     if form.validate_on_submit():
         
-        data =  [{"Gender":form.gender.data,
+        data = [{"Gender":form.gender.data,
                 "Age":form.age.data,
                 "Driving_License":form.driving_license.data,
                 "Region_code":float(form.region_code.data),
@@ -35,14 +35,16 @@ def index():
 @main.route('/batch', methods=['GET', 'POST'])
 def batch():
     if request.method == 'POST':
-        print("-------POST------")
+
+        global data, response, confidence
+
         f = request.files.get('file')
         stream = codecs.iterdecode(f.stream, 'utf-8')
 
         data = []
-        print("-------1-------")
+
         for line in stream:
-            print(line)
+
             sample = line.replace("\n","").split(",")
             data.append(
                 {"Gender": sample[0],
@@ -58,7 +60,7 @@ def batch():
             )
 
         response, confidence = predict(data)
-        print(response)
+
         session['data'] = data
         session['response'] =response
         session['confidence'] = confidence
