@@ -46,6 +46,11 @@ def extract_move_delete(archive_name):
     rmtree("00000001")
     
 
+def write_log():
+    f = open("learning.log", "a+")
+    f.write("COMPLETED\n")
+    f.close()
+
     
 if __name__== "__main__":
     
@@ -60,6 +65,7 @@ if __name__== "__main__":
     
     print("Starting online learning...")
     
+    """
     estimator = TensorFlow(
     entry_point="training_script.py",
     role=role,
@@ -85,6 +91,9 @@ if __name__== "__main__":
     print("Moving new model inside app...", end="")
     extract_move_delete(ARCHIVE_NAME)
     print("DONE")
+    """
+    
+    write_log()
     print("\nCOMPLETED!\n")
-           
+        
     
