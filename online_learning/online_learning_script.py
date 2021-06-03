@@ -5,6 +5,9 @@ from sagemaker.tensorflow import TensorFlow
 import boto3
 from botocore.exceptions import ClientError
 from datetime import datetime as dt
+import tarfile
+from os import remove
+from shutil import move, rmtree
 
 
 AWS_ROLE = "role_sagemaker"
@@ -12,6 +15,8 @@ AWS_ROLE = "role_sagemaker"
 DATA_BUCKET = "health-insurance-cross-sell"
 DATA_URI = "s3://"+DATA_BUCKET
 
+APP_DIR = "../app/app/"
+ARCHIVE_NAME = "model.tar.gz"
 
 def upload_data():
     today = dt.now()
@@ -19,10 +24,10 @@ def upload_data():
 
     s3 = boto3.client('s3')
 
-    with open("../app/app/predictions/data.csv", "rb") as f:
+    with open(APP_DIR+"predictions/data.csv", "rb") as f:
         s3.upload_fileobj(f, DATA_BUCKET, folder+"/data.csv")
 
-    with open("../app/app/model/model.h5", "rb") as f:
+    with open(APP_DIR+"/model/model.h5", "rb") as f:
         s3.upload_fileobj(f, DATA_BUCKET, folder+"/model.h5")
 
 
@@ -30,7 +35,16 @@ def download_model(model_dir):
     p = model_dir.split("/")
     bucket_name, bucket_path = p[2], p[3]
     s3 = boto3.resource('s3')
-    s3.Bucket(bucket_name).download_file(bucket_path+"/output/model.tar.gz", "model.tar.gz")
+    s3.Bucket(bucket_name).download_file(bucket_path+"/output/"+ARCHIVE_NAME, ARCHIVE_NAME)
+
+    
+def extract_move_delete(archive_name):
+    tar = tarfile.open(archive_name, "r:gz")
+    tar.extractall()
+    tar.close()
+    move(archive_name, APP_DIR+"/model/"+archive_name)
+    rmtree("00000001")
+    
 
     
 if __name__== "__main__":
@@ -67,4 +81,10 @@ if __name__== "__main__":
     print("Downloading new model...", end="")
     download_model(new_model_dir)
     print("DONE")
+                       
+    print("Moving new model inside app...", end="")
+    extract_move_delete(ARCHIVE_NAME)
+    print("DONE")
+    print("\nCOMPLETED!\n")
+           
     
