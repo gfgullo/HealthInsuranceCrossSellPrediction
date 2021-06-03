@@ -8,7 +8,6 @@ from datetime import datetime as dt
 import tarfile
 from os import remove, getcwd
 from shutil import move, rmtree
-from os.path import abspath
 import sys
 
 AWS_ROLE = "role_sagemaker"
@@ -16,7 +15,10 @@ AWS_ROLE = "role_sagemaker"
 DATA_BUCKET = "health-insurance-cross-sell"
 DATA_URI = "s3://"+DATA_BUCKET
 
-APP_DIR = abspath("../app/app")
+LEARNING_PATH = sys.path[0].replace("online_learning","")
+BASE_PATH = LEARNING_PATH.replace("online_learning","")
+APP_DIR = BASE_PATH+"/app/app/"
+
 ARCHIVE_NAME = "model.tar.gz"
 
 def upload_data():
@@ -25,10 +27,10 @@ def upload_data():
 
     s3 = boto3.client('s3')
 
-    with open(APP_DIR+"/predictions/data.csv", "rb") as f:
+    with open(APP_DIR+"predictions/data.csv", "rb") as f:
         s3.upload_fileobj(f, DATA_BUCKET, folder+"/data.csv")
 
-    with open(APP_DIR+"/model/model.h5", "rb") as f:
+    with open(APP_DIR+"model/model.h5", "rb") as f:
         s3.upload_fileobj(f, DATA_BUCKET, folder+"/model.h5")
 
 
@@ -40,7 +42,7 @@ def download_model(model_dir):
 
     
 def extract_move_delete(archive_name):
-    archive_path = abspath(archive_name)
+    archive_path = LEARNING_PATH+archive_name
     tar = tarfile.open(archive_path, "r:gz")
     tar.extractall()
     tar.close()
@@ -57,7 +59,6 @@ def write_log():
 if __name__== "__main__":
     
     print(getcwd())
-    print(sys.path[0])
     print("Uploading collected samples on S3...", end="")
     training_data_uri = upload_data()
     print("DONE")
