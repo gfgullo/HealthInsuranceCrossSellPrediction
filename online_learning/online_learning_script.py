@@ -44,7 +44,7 @@ def download_model(model_dir):
 def extract_move_delete(archive_name):
     archive_path = LEARNING_PATH+archive_name
     tar = tarfile.open(archive_path)
-    tar.extractall()
+    tar.extractall(path=LEARNING_PATH)
     tar.close()
     move(LEARNING_PATH+"model.h5", APP_DIR+"/model/model.h5")
     #remove(archive_path)
