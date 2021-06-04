@@ -47,7 +47,7 @@ def extract_move_delete(archive_name):
     tar.extractall()
     tar.close()
     move(LEARNING_PATH+"model.h5", APP_DIR+"/model/model.h5")
-    remove(archive_path)
+    #remove(archive_path)
     #rmtree(LEARNING_PATH+"00000001")
 
     
