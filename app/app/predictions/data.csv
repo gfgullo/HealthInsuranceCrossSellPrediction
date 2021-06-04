@@ -1,7 +1,0 @@
-Gender,Age,Driving_License,Region_code,Previously_Insured,Vehicle_Age,Vehicle_Damage,Annual_Premium,Policy_Sales_Channel,Vintage,Prediction,Probability
-'Male',29,True,28.0,False,'> 2 Years',True,2000.0,26.0,217,False,0.0
-'Female',35,True,28.0,True,'> 2 Years',True,1000.0,23.0,720,False,0.0
-'Male',44,True,15.0,True,'> 2 Years',True,1600.0,23.0,720,False,0.0
-'Male',21,True,6.0,False,'< 1 Year',True,1400.0,24.0,30,True,0.9599999785423279
-'Male',29,True,0.0,False,'> 2 Years',True,1200.0,1.0,217,True,0.9800000190734863
-'Male',31,True,2.0,False,'> 2 Years',True,1200.0,1.0,180,True,0.9700000286102295

@@ -4,25 +4,25 @@ from tensorflow.keras.models import load_model as load_tf_model
 from joblib import load
 from flask import current_app
 from os.path import exists
+import csv
 
+np.set_printoptions(suppress=True)
 
-def store_predictions(data, columns=None):
-
-    np.set_printoptions(suppress=True)
+def store_predictions(data, columns=[]):
 
     fpath = current_app.root_path + "/predictions/data.csv"
     if (exists(fpath)):
-        f = open(current_app.root_path + "/predictions/data.csv", "a")
+        f = open(fpath, "a")
     else:
-        f = open(current_app.root_path + "/predictions/data.csv", "w")
-        if(columns!=None):
+        f = open(fpath, "w")
+        if(columns!=[]):
             f.write(",".join(columns) + "\n")
 
-    f.write(np.array_str(data)[2:-2]
-            .replace("\n", "")
-            .replace("  ", " ")
-            .replace(" ", ",")
-            + "\n")
+    data_writer = csv.writer(f, delimiter=',', quotechar="'", quoting=csv.QUOTE_MINIMAL)
+    data_list = data.astype(str).tolist()
+
+    for sample in data_list:
+        data_writer.writerow(sample)
     f.close()
 
 
@@ -44,7 +44,7 @@ def preprocess(df):
 
 
 def load_model():
-    model = load_tf_model(current_app.root_path+"/model/model_2.h5")
+    model = load_tf_model(current_app.root_path+"/model/model.h5")
     return model
 
 

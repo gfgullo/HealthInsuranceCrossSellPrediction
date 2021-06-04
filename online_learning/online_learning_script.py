@@ -6,11 +6,15 @@ import boto3
 from botocore.exceptions import ClientError
 from datetime import datetime as dt
 import tarfile
-from os import remove, getcwd
+from os import remove
+from os.path import exists
 from shutil import move, rmtree
 import sys
+import pandas as pd
 
-AWS_ROLE = "role_sagemaker"
+MIN_REQUIRED_SAMPLES = 2
+
+AWS_ROLE = "sagemaker_role"
 
 DATA_BUCKET = "health-insurance-cross-sell"
 DATA_URI = "s3://"+DATA_BUCKET
@@ -19,7 +23,26 @@ LEARNING_PATH = sys.path[0]+"/"
 BASE_PATH = LEARNING_PATH.replace("online_learning","")
 APP_DIR = BASE_PATH+"app/app/"
 
+SAMPLES_PATH = APP_DIR+"predictions/data.csv"
+
 ARCHIVE_NAME = "model.tar.gz"
+
+
+def check_data():
+
+    if not exists(SAMPLES_PATH):
+        print("Samples file not found !")
+        return False
+
+    df = pd.read_csv(SAMPLES_PATH)
+    df_count = df.shape[0]
+
+    if df_count<MIN_REQUIRED_SAMPLES:
+        print("%d samples collected, minimum required are %d" % (df_count, MIN_REQUIRED_SAMPLES))
+        return False
+
+    print("%d samples collected" % df_count)
+    return True
 
 def upload_data():
     today = dt.now()
@@ -49,10 +72,14 @@ def extract_move_delete(archive_name):
     move(LEARNING_PATH+"model.h5", APP_DIR+"/model/model.h5")
     remove(archive_path)
     rmtree(LEARNING_PATH+"00000001")
+    remove(APP_DIR+"predictions/data.csv")
 
     
 if __name__== "__main__":
     
+    if not check_data():
+        exit(0)
+
     print("Uploading collected samples on S3...", end="")
     training_data_uri = upload_data()
     print("DONE")
@@ -78,7 +105,7 @@ if __name__== "__main__":
     estimator.fit(DATA_URI)
     
     new_model_dir = estimator.model_dir
-    
+
     print("Training completed!")
     print("Model stored at: "+new_model_dir)
     
